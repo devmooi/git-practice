@@ -109,7 +109,15 @@ const Box = () => {
               <span className="mouth" />
             </div>
           </Door>
-          <Door className="door-lower" bins={freezerDoor} />
+          <Door className="door-lower" bins={freezerDoor}>
+            {/* 로고 */}
+            <img
+              className="door-logo"
+              src={`${import.meta.env.BASE_URL}logo.png`}
+              alt="로고"
+              draggable={false}
+            />
+          </Door>
         </div>
       </div>
     </div>

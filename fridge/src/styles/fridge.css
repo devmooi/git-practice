@@ -348,6 +348,18 @@ body {
   border-radius: 2px 2px 5px 5px;
 }
 
+/* ---- 아래 문 로고 (문 가운데) ---- */
+.door-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(72 * var(--u));
+  height: auto;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 2px 2px rgba(60, 70, 90, 0.18));
+  user-select: none;
+}
+
 /* ---- 귀여운 얼굴 ---- */
 .fridge-face {
   position: absolute;
