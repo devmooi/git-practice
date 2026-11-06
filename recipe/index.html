@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나만의 냉장고 레시피 요리사</title>
+    <title>레시피를 찾아보세요</title>
+    <link rel="icon" type="image/png" href="../fridge/public/logo.png">
     <!-- 냉장고 스타일: ../fridge 프로젝트의 CSS를 그대로 사용 -->
     <link rel="stylesheet" href="../fridge/src/styles/fridge.css">
     <style>
@@ -33,11 +34,51 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            font-size: 24px;
-            margin-bottom: 20px;
+        /* 상단: 뒤로가기 + 로고 + 제목 */
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: -10px 0 24px -10px;
+        }
+
+        .back-btn {
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: rgba(79, 138, 43, 0.08);
+        }
+
+        .back-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: none;
+            stroke: #8ab56a;
+            stroke-width: 2.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .page-logo {
+            width: 52px;
+            height: auto;
+        }
+
+        .page-header h1 {
+            margin: 0 0 0 10px;
+            font-size: clamp(20px, 5.5vw, 26px);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #111;
         }
 
         /* 둥근 검색창 (돋보기 + 입력칸) */
@@ -160,7 +201,16 @@
 <body>
 
 <div class="container">
-    <h1>재료 맞춤 추천 레시피</h1>
+    <!-- 상단: 뒤로가기 + 로고 + 제목 -->
+    <header class="page-header">
+        <button type="button" class="back-btn" aria-label="뒤로가기" onclick="history.back()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 4 7 12l8 8" />
+            </svg>
+        </button>
+        <img class="page-logo" src="../fridge/public/logo.png" alt="">
+        <h1>레시피를 찾아보세요</h1>
+    </header>
     
     <!-- 검색창: 입력하고 Enter 를 누르면 태그로 추가 (쉼표로 여러 개 가능) -->
     <label class="search-box">
