@@ -28,22 +28,66 @@
             margin: 0;
         }
 
-        /* 앱 화면: 420 x 912 (화면이 더 작으면 화면에 꽉 차게), 안쪽만 스크롤 */
-        .container {
+        /* 앱 화면: 420 x 912 (화면이 더 작으면 화면에 꽉 차게)
+           내용(.container)은 스크롤, 하단 탭은 맨 아래에 고정 */
+        .app {
+            display: flex;
+            flex-direction: column;
             width: min(var(--app-w), 100vw);
             height: min(var(--app-h), 100dvh);
             margin: 0 auto;
-            padding: 24px 20px;
             background: var(--bg-color);
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow: hidden;
         }
 
         /* 넓은 화면에서는 앱 화면의 테두리가 보이게 */
         @media (min-width: 440px) {
-            .container {
+            .app {
                 box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 8px 30px rgba(0, 0, 0, 0.06);
             }
+        }
+
+        .container {
+            flex: 1;
+            min-height: 0;
+            padding: 24px 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* ---- 하단 탭 ---- */
+        .bottom-nav {
+            flex: none;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            height: 76px;
+            padding-bottom: env(safe-area-inset-bottom);
+            background: #fff;
+            border-top: 1px solid #ccc;
+        }
+
+        .nav-btn {
+            display: grid;
+            place-items: center;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .nav-btn svg {
+            width: 40px;
+            height: 40px;
+            fill: none;
+            stroke: #8aab6b;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform 0.2s;
+        }
+
+        .nav-btn:hover svg {
+            transform: translateY(-2px);
         }
 
         /* 상단: 뒤로가기 + 로고 + 제목 */
@@ -241,6 +285,7 @@
 </head>
 <body>
 
+<div class="app">
 <div class="container">
     <!-- 상단: 뒤로가기 + 로고 + 제목 -->
     <header class="page-header">
@@ -444,6 +489,35 @@
 
     <!-- 결과 출력 영역 (재료를 추가하거나 지우면 바로 바뀜) -->
     <div class="recipe-list" id="recipe-list"></div>
+</div>
+
+<!-- 하단 탭: 홈 / 냉장고 / 레시피 / 마이페이지 -->
+<nav class="bottom-nav">
+    <button type="button" class="nav-btn" aria-label="홈">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3.5 11 12 4l8.5 7v8.5a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5Z" />
+            <path d="M9.5 21v-6h5v6" />
+        </svg>
+    </button>
+    <button type="button" class="nav-btn" aria-label="냉장고">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="2.5" width="12" height="19" rx="2.5" />
+            <path d="M6 9h12M15 5.5v1.5M15 11.5v3" />
+        </svg>
+    </button>
+    <button type="button" class="nav-btn" aria-label="레시피" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4.5" y="2.5" width="15" height="19" rx="1.5" />
+            <path d="M4.5 18h15M9 6v4.5M8 6v2.5a1 1 0 0 0 2 0V6M14.5 6c1.3 0 1.8 1.2 1.8 2.6s-.7 2-1.8 2V14" />
+        </svg>
+    </button>
+    <button type="button" class="nav-btn" aria-label="마이페이지">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4.5 21a7.5 7.5 0 0 1 15 0" />
+        </svg>
+    </button>
+</nav>
 </div>
 
 <script>
