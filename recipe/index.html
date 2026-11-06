@@ -338,9 +338,7 @@
       </div>
     </div>
 
-    <button id="search-btn" style="width: 100%; background-color: #2196F3;">레시피 찾기</button>
-
-    <!-- 결과 출력 영역 -->
+    <!-- 결과 출력 영역 (재료를 추가하거나 지우면 바로 바뀜) -->
     <div class="recipe-list" id="recipe-list"></div>
 </div>
 
@@ -358,7 +356,6 @@
     const input = document.getElementById('ingredient-input');
     const addBtn = document.getElementById('add-btn');
     const tagsContainer = document.getElementById('tags-container');
-    const searchBtn = document.getElementById('search-btn');
     const recipeList = document.getElementById('recipe-list');
 
     // 재료 추가 기능
@@ -387,6 +384,8 @@
             tag.innerHTML = `${ingredient} <span class="remove-btn" onclick="removeIngredient(${index})">&times;</span>`;
             tagsContainer.appendChild(tag);
         });
+        // 재료가 바뀔 때마다 레시피를 다시 찾기
+        searchRecipes();
     }
 
     // 태그 삭제
@@ -398,10 +397,8 @@
     // 레시피 검색 알고리즘
     function searchRecipes() {
         recipeList.innerHTML = "";
-        if (currentIngredients.length === 0) {
-            recipeList.innerHTML = "<p style='text-align:center; color:#999;'>재료를 먼저 추가해주세요!</p>";
-            return;
-        }
+        // 재료가 없으면 결과도 비워둠
+        if (currentIngredients.length === 0) return;
 
         // 재료 매칭 개수가 많은 순서대로 필터링 및 정렬
         const results = recipeDatabase
@@ -433,7 +430,6 @@
     // 이벤트 리스너 연결
     addBtn.addEventListener('click', addIngredients);
     input.addEventListener('keypress', (e) => { if (e.key === 'Enter') addIngredients(); });
-    searchBtn.addEventListener('click', searchRecipes);
 </script>
 
 </body>
