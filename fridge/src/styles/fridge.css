@@ -26,6 +26,8 @@ body {
   perspective: calc(2200 * var(--u));
   perspective-origin: 50% 30%;
   font-size: calc(36 * var(--u));
+  outline: none;
+  cursor: pointer;
 }
 
 .cabinet {
@@ -86,17 +88,16 @@ body {
   transform: rotateX(90deg) translateZ(calc(var(--H) / 2));
 }
 
-.face-top::after {
-  /* 천장 조명 */
-  content: "";
-  position: absolute;
+/* 천장 조명: 윗면 바로 아래(안쪽)에 붙어 있어서 밖에서는 안 보임 */
+.ceiling-light {
   left: 25%;
-  right: 25%;
-  top: 45%;
-  height: 4%;
+  width: 50%;
+  height: calc(10 * var(--u));
+  top: calc(-5 * var(--u));
   border-radius: 4px;
   background: #fff;
   box-shadow: 0 0 20px 8px rgba(255, 250, 225, 0.9);
+  transform: translateZ(calc(var(--D) * 0.1)) translateY(calc(4 * var(--u))) rotateX(90deg);
 }
 
 .face-bottom {
@@ -202,7 +203,16 @@ body {
   top: calc(380 * var(--u));
   width: var(--dw);
   height: var(--dh);
+  /* 닫힘: 앞판이 냉장고 앞면에 딱 맞게 */
+  transform: translateZ(calc(var(--D) / 2 - var(--dd) / 2 + 2 * var(--u)));
+  transition: transform 0.7s ease 0s;
+}
+
+/* 열림: 서랍이 앞으로 빠져나옴 (문보다 조금 늦게) */
+.scene:hover .freezer,
+.scene:focus-within .freezer {
   transform: translateZ(calc(var(--D) / 2 + 60 * var(--u)));
+  transition-delay: 0.2s;
 }
 
 .drawer-bottom {
@@ -275,11 +285,21 @@ body {
 }
 
 /* ---- 문 (오른쪽 경첩으로 열림) ---- */
+/* 평소에는 닫혀 있다가, 마우스를 올리면 열림 */
 .door {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: var(--W);
+  height: calc(374 * var(--u)); /* 냉동 서랍 위까지만 */
   transform-origin: 100% 50%;
-  transform: translateZ(calc(var(--D) / 2)) rotateY(100deg);
+  transform: translateZ(calc(var(--D) / 2 + 1 * var(--u))) rotateY(0deg);
+  transition: transform 0.8s cubic-bezier(0.3, 0.9, 0.3, 1);
+}
+
+.scene:hover .door,
+.scene:focus-within .door {
+  transform: translateZ(calc(var(--D) / 2 + 1 * var(--u))) rotateY(100deg);
 }
 
 .door-outer {
@@ -301,7 +321,7 @@ body {
   top: 0;
   left: calc(-9 * var(--u));
   width: calc(18 * var(--u));
-  height: var(--H);
+  height: 100%;
   background: var(--steel-dark);
   transform: translateZ(calc(-9 * var(--u))) rotateY(-90deg);
 }
@@ -312,7 +332,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: calc(40 * var(--u)) calc(22 * var(--u)) calc(70 * var(--u));
+  padding: calc(30 * var(--u)) calc(22 * var(--u)) calc(30 * var(--u));
   background: linear-gradient(90deg, #f6f7f8, #e2e5e8);
   border: calc(9 * var(--u)) solid #c6cace;
   border-radius: 4px;

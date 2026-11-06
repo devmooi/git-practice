@@ -21,11 +21,13 @@ const Food = ({ item }) => {
 
 const Box = () => {
   return (
-    <div className="scene">
+    // tabIndex: 휴대폰에서 터치하거나 키보드 Tab 으로도 열 수 있게
+    <div className="scene" tabIndex={0}>
       <div className="cabinet">
         {/* ---- 몸체 바깥면 ---- */}
         <div className="face face-back" />
         <div className="face face-top" />
+        <div className="face ceiling-light" />
         <div className="face face-bottom" />
         <div className="face face-right" />
         <div className="face face-left">
