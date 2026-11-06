@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 냉장고 레시피 요리사</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --bg-color: #f7f9fc;
+            --card-color: #ffffff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-color);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            min-height: 40px;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tag {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag .remove-btn {
+            cursor: pointer;
+            font-weight: bold;
+            color: #c62828;
+        }
+
+        .recipe-list {
+            margin-top: 20px;
+        }
+
+        .recipe-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .recipe-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .recipe-match {
+            font-size: 12px;
+            color: #757575;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>재료 맞춤 추천 레시피</h1>
+    
+    <!-- 재료 입력 창 -->
+    <div class="input-group">
+        <input type="text" id="ingredient-input" placeholder="예: 김치, 계란, 스팸 (쉼표로 구분 가능)">
+        <button id="add-btn">추가</button>
+    </div>
+
+    <!-- 입력된 재료 태그가 보이지는 곳 -->
+    <div class="tags-container" id="tags-container"></div>
+
+    <button id="search-btn" style="width: 100%; background-color: #2196F3;">레시피 찾기</button>
+
+    <!-- 결과 출력 영역 -->
+    <div class="recipe-list" id="recipe-list"></div>
+</div>
+
+<script>
+    // 가상의 샘플 레시피 데이터베이스 (확장 가능)
+    const recipeDatabase = [
+        { title: "김치볶음밥", ingredients: ["김치", "밥", "스팸", "계란"],의 만듦새: "1. 팬에 기름을 두르고 다진 김치와 스팸을 볶습니다. 2. 밥을 넣고 함께 볶은 뒤 참기름을 두릅니다. 3. 계란 후라이를 올려 마무리합니다." },
+        { title: "계란말이", ingredients: ["계란", "대파"],의 만듦새: "1. 계란을 풀고 소금으로 간을 합니다. 2. 다진 대파를 섞어줍니다. 3. 달군 팬에 계란물을 나누어 부어가며 돌돌 말아줍니다." },
+        { title: "스팸두부조림", ingredients: ["스팸", "두부", "대파"],의 만듦새: "1. 두부와 스팸을 도톰하게 썰어 냄비에 번갈아 깝니다. 2. 간장, 고춧가루, 다진 마늘로 양념장을 만들어 부어줍니다. 3. 대파를 올리고 자작하게 조립니다." },
+        { title: "된장찌개", ingredients: ["두부", "대파", "호박", "감자"],의 만듦새: "1. 뚝배기에 물을 붓고 된장을 풉니다. 2. 감자, 호박을 먼저 넣어 끓입니다. 3. 두부와 대파를 넣고 한소끔 더 끓여 완성합니다." }
+    ];
+
+    let currentIngredients = [];
+
+    const input = document.getElementById('ingredient-input');
+    const addBtn = document.getElementById('add-btn');
+    const tagsContainer = document.getElementById('tags-container');
+    const searchBtn = document.getElementById('search-btn');
+    const recipeList = document.getElementById('recipe-list');
+
+    // 재료 추가 기능
+    function addIngredients() {
+        const value = input.value.trim();
+        if (!value) return;
+
+        // 쉼표로 입력해도 분리되도록 설정
+        const items = value.split(',').map(item => item.trim()).filter(item => item !== "");
+        
+        items.forEach(item => {
+            if (!currentIngredients.includes(item)) {
+                currentIngredients.push(item);
+                renderTags();
+            }
+        });
+        input.value = "";
+    }
+
+    // 태그 화면에 그리기
+    function renderTags() {
+        tagsContainer.innerHTML = "";
+        currentIngredients.forEach((ingredient, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `${ingredient} <span class="remove-btn" onclick="removeIngredient(${index})">&times;</span>`;
+            tagsContainer.appendChild(tag);
+        });
+    }
+
+    // 태그 삭제
+    window.removeIngredient = function(index) {
+        currentIngredients.splice(index, 1);
+        renderTags();
+    };
+
+    // 레시피 검색 알고리즘
+    function searchRecipes() {
+        recipeList.innerHTML = "";
+        if (currentIngredients.length === 0) {
+            recipeList.innerHTML = "<p style='text-align:center; color:#999;'>재료를 먼저 추가해주세요!</p>";
+            return;
+        }
+
+        // 재료 매칭 개수가 많은 순서대로 필터링 및 정렬
+        const results = recipeDatabase
+            .map(recipe => {
+                const matched = recipe.ingredients.filter(ing => currentIngredients.includes(ing));
+                return { ...recipe, matchCount: matched.length, matchedIngredients: matched };
+            })
+            .filter(recipe => recipe.matchCount > 0)
+            .sort((a, b) => b.matchCount - a.matchCount);
+
+        if (results.length === 0) {
+            recipeList.innerHTML = "<p style='text-align:center; color:#999;'>일치하는 레시피가 없습니다. 다른 재료를 입력해보세요!</p>";
+            return;
+        }
+
+        // 결과 화면 표시
+        results.forEach(recipe => {
+            const card = document.createElement('div');
+            card.className = 'recipe-card';
+            card.innerHTML = `
+                <div class="recipe-title">🍳 ${recipe.title}</div>
+                <div class="recipe-match">보유 재료 매칭: ${recipe.matchedIngredients.join(', ')} (${recipe.matchCount}/${recipe.ingredients.length})</div>
+                <p style="margin: 0; line-height: 1.6; font-size:14px; color:#555;">${recipe.의 만듦새}</p>
+            `;
+            recipeList.appendChild(card);
+        });
+    }
+
+    // 이벤트 리스너 연결
+    addBtn.addEventListener('click', addIngredients);
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') addIngredients(); });
+    searchBtn.addEventListener('click', searchRecipes);
+</script>
+
+</body>
+</html>
