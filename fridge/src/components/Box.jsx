@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import {
   fridgeShelves,
   fridgeFreezer,
@@ -5,6 +6,10 @@ import {
   freezerDoor,
 } from "../utils/fridgeData";
 import "../styles/fridge.css";
+
+// 문이 다 열린 뒤에만 클릭으로 이동하도록 기다리는 시간 (ms)
+// (휴대폰: 첫 번째 터치 = 문 열기, 두 번째 터치 = 이동)
+const OPEN_DELAY = 350;
 
 // 식재료 그림이 있는 폴더 (public/icons)
 const ICON_PATH = `${import.meta.env.BASE_URL}icons/`;
@@ -64,12 +69,40 @@ const Door = ({ className, bins, children }) => (
   </div>
 );
 
-const Box = () => {
+// onOpenFridge: 위 문이 열린 상태에서 안을 클릭하면 실행 (없으면 클릭해도 아무 일 없음)
+const Box = ({ onOpenFridge }) => {
+  const openedAt = useRef(0); // 위 문이 열리기 시작한 시각
+
+  const startOpen = () => {
+    if (!openedAt.current) openedAt.current = Date.now();
+  };
+  const stopOpen = () => {
+    openedAt.current = 0;
+  };
+  const clickInside = () => {
+    if (!onOpenFridge) return;
+    if (openedAt.current && Date.now() - openedAt.current >= OPEN_DELAY) {
+      onOpenFridge();
+    }
+  };
+
   return (
     <div className="fridge-wrap">
       {/* 보이지 않는 마우스 감지 영역: 위 = 냉장실 문, 아래 = 냉동실 문
           tabIndex: 휴대폰 터치나 키보드 Tab 으로도 열 수 있게 */}
-      <div className="zone zone-door" tabIndex={0} aria-label="냉장실 문 열기" />
+      <div
+        className="zone zone-door"
+        tabIndex={0}
+        aria-label="냉장실 문 열기"
+        onMouseEnter={startOpen}
+        onMouseLeave={stopOpen}
+        onFocus={startOpen}
+        onBlur={stopOpen}
+        onClick={clickInside}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && onOpenFridge) onOpenFridge();
+        }}
+      />
       <div className="zone zone-freezer" tabIndex={0} aria-label="냉동실 문 열기" />
 
       <div className="scene">

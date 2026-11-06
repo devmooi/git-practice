@@ -1,0 +1,291 @@
+/* ============================================
+   레시피창_1 (Figma 값 그대로, 420 x 852 + 하단 바 60)
+   ============================================ */
+.recipe-page-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.recipe-page {
+  --f-title: "Instrument Sans", "Malgun Gothic", sans-serif;
+  --f-body: "Inika", "Malgun Gothic", serif;
+  --f-sans: "42dot Sans", "Malgun Gothic", sans-serif;
+  --f-search: "Paperlogy", "Malgun Gothic", sans-serif;
+
+  position: relative;
+  width: 420px;
+  height: 852px;
+  background: #f2f2f2;
+  transform-origin: top left;
+}
+
+.recipe-page > *,
+.recipe-page header > *,
+.rp-category > *,
+.rp-cat > *,
+.recipe-card-f > * {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+/* ---- 헤더 ---- */
+.rp-header {
+  left: 0;
+  top: -1px;
+  width: 420px;
+  height: 80px;
+}
+
+.rp-header-bg {
+  left: 0;
+  top: 9px;
+  width: 420px;
+  height: 60px;
+  background: #f2f2f2;
+}
+
+.rp-back {
+  left: 0;
+  top: 20px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.rp-back svg,
+.chevron svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #8ab56a;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rp-logo {
+  left: 36px;
+  top: -1px;
+  width: 80px;
+  height: 80px;
+  padding: 10px; /* Figma 로고 그림의 여백만큼 (분류 카드와 겹치지 않게) */
+  object-fit: contain;
+}
+
+/* 검색창 (Rectangle 27) */
+.rp-search {
+  left: 114px;
+  top: 19px;
+  width: 297px;
+  height: 39px;
+  background: #fff;
+  border: 1px solid #6f9c4c;
+  border-radius: 30px;
+  cursor: text;
+}
+
+.rp-search:focus-within {
+  box-shadow: 0 0 0 3px rgba(111, 156, 76, 0.18);
+}
+
+.rp-search svg {
+  position: absolute;
+  left: 13px;   /* 127 - 114 */
+  top: 10px;    /* 29 - 19 */
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: #8ab56a;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.rp-search input {
+  position: absolute;
+  left: 35px;   /* 149 - 114 */
+  top: 6px;
+  width: 252px; /* Figma 223 은 Paperlogy 기준 → 대신 쓰는 글꼴은 조금 넓어서 늘림 */
+  height: 24px;
+  letter-spacing: -0.03em;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: var(--f-search);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #333;
+}
+
+.rp-search input::placeholder {
+  color: #b9b9b9;
+}
+
+/* ---- 레시피 분류 (헤더(레시피창)) ---- */
+.rp-category {
+  left: 10px;
+  top: 63px;
+  width: 400px;
+  height: 100px;
+  background: #fff;
+  border-radius: 5px;
+}
+
+.rp-category-title {
+  left: 20px;
+  top: 6px;
+  width: 77px;
+  height: 20px;
+  margin: 0;
+  font-family: var(--f-title);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  white-space: nowrap;
+  color: #94ad6e;
+}
+
+.chevron {
+  width: 37px;
+  height: 37px;
+  padding: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.chevron--left {
+  left: 3px;
+  top: 32px;
+}
+
+.chevron--right {
+  left: 363px;
+  top: 30px;
+  transform: rotate(180deg);
+}
+
+/* 분류 버튼: 그림과 글자를 카드 기준 위치에 놓기 위해 버튼 자체는 크기 없음 */
+.rp-cat {
+  position: static !important;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.rp-cat-img {
+  border: 1px solid #fff;
+  object-fit: cover;
+  transition: transform 0.15s;
+}
+
+.rp-cat:hover .rp-cat-img {
+  transform: translateY(-2px);
+}
+
+.rp-cat-label {
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-body);
+  font-size: 10px;
+  line-height: 13px;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: #000;
+}
+
+/* ---- 레시피 카드 ---- */
+.recipe-card-f {
+  left: calc(50% - 200px);
+  width: 400px;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.rc-img {
+  object-fit: cover;
+}
+
+.rc-title {
+  margin: 0;
+  font-family: var(--f-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  letter-spacing: -0.03em;
+  color: #000;
+  /* 두 줄까지만, 넘치면 … */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.rc-avatar {
+  border-radius: 50%;
+  background: #e2d7d7;
+}
+
+.rc-author,
+.rc-views {
+  display: flex;
+  align-items: center;
+  font-family: var(--f-sans);
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: #000;
+}
+
+.rc-author {
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.rc-views {
+  font-size: 15px;
+  line-height: 18px;
+}
+
+/* 별 (Figma Star) */
+.rc-star {
+  background: #ffb600;
+  clip-path: polygon(50% 0%, 61.8% 35.4%, 100% 38.2%, 69.1% 61.8%, 79.4% 100%, 50% 76.4%, 20.6% 100%, 30.9% 61.8%, 0% 38.2%, 38.2% 35.4%);
+}
+
+/* Figma 그림이 없을 때 대신 보이는 식재료 아이콘 */
+.is-fallback {
+  display: grid;
+  place-items: center;
+  background: #f6f3ec;
+  overflow: hidden;
+}
+
+.is-fallback img {
+  width: 68%;
+  height: 68%;
+  object-fit: contain;
+}
+
+.rp-cat-img.is-fallback {
+  background: #f6f6f2;
+  border-radius: 4px;
+}
+
+.rp-cat-img.is-fallback img {
+  width: 82%;
+  height: 82%;
+}
