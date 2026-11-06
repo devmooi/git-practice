@@ -142,7 +142,7 @@
 
         .fridge-box .fridge-wrap {
             --u: min(1px, calc(100cqw / 620));
-            height: calc(500 * var(--u));
+            height: calc(560 * var(--u));
             margin: 0 auto;
         }
     </style>
@@ -165,23 +165,20 @@
          ../fridge/src/components/Box.jsx 를 HTML로 옮긴 것 -->
     <div class="fridge-box">
       <div class="fridge-wrap">
-        <div class="zone zone-door" tabindex="0" aria-label="냉장고 문 열기"></div>
-        <div class="zone zone-freezer" tabindex="0" aria-label="냉동실 열기"></div>
+        <div class="zone zone-door" tabindex="0" aria-label="냉장실 문 열기"></div>
+        <div class="zone zone-freezer" tabindex="0" aria-label="냉동실 문 열기"></div>
         <div class="scene">
           <div class="cabinet">
+            <div class="face floor-shadow"></div>
+            <div class="foot foot--left"></div>
+            <div class="foot foot--right"></div>
             <div class="face face-back"></div>
             <div class="face face-top"></div>
             <div class="face ceiling-light"></div>
             <div class="face face-bottom"></div>
             <div class="face face-right"></div>
-            <div class="face face-left">
-              <div class="signal">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-            <div style="--y:140">
+            <div class="face face-left"></div>
+            <div style="--y:100">
               <div class="shelf"></div>
               <div class="shelf-row">
                 <div class="food" title="우유 2개">
@@ -193,14 +190,13 @@
                   <span class="food-icon">🍅</span>
                   <span class="food-icon">🍅</span>
                 </div>
-                <div class="food food--bowl" title="상추 3개">
-                  <span class="food-icon">🥬</span>
+                <div class="food food--bowl" title="상추 2개">
                   <span class="food-icon">🥬</span>
                   <span class="food-icon">🥬</span>
                 </div>
               </div>
             </div>
-            <div style="--y:250">
+            <div style="--y:190">
               <div class="shelf"></div>
               <div class="shelf-row">
                 <div class="food" title="토마토 2개">
@@ -217,13 +213,12 @@
                 </div>
               </div>
             </div>
-            <div style="--y:360">
+            <div style="--y:278">
               <div class="shelf"></div>
               <div class="shelf-row">
-                <div class="food" title="토마토 3개">
-                  <span class="food-icon">🍅</span>
-                  <span class="food-icon">🍅</span>
-                  <span class="food-icon">🍅</span>
+                <div class="food" title="당근 2개">
+                  <span class="food-icon">🥕</span>
+                  <span class="food-icon">🥕</span>
                 </div>
                 <div class="food" title="양배추 1개">
                   <span class="food-icon">🥬</span>
@@ -234,45 +229,52 @@
                 </div>
               </div>
             </div>
-            <div class="face face-frame"></div>
-            <div class="freezer">
-              <div class="face drawer-bottom"></div>
-              <div class="face drawer-back"></div>
-              <div class="face drawer-left"></div>
-              <div class="face drawer-right"></div>
-              <div class="drawer-row">
-                <div class="tray">
-                  <div class="food" title="소고기 2개">
-                    <span class="food-icon">🥩</span>
-                    <span class="food-icon">🥩</span>
-                  </div>
+            <div class="face divider-floor"></div>
+            <div style="--y:380">
+              <div class="shelf"></div>
+              <div class="shelf-row">
+                <div class="food" title="아이스크림 2개">
+                  <span class="food-icon">🍦</span>
+                  <span class="food-icon">🍦</span>
                 </div>
-                <div class="tray">
-                  <div class="food" title="닭고기 2개">
-                    <span class="food-icon">🍗</span>
-                    <span class="food-icon">🍗</span>
-                  </div>
+                <div class="food" title="얼음 3개">
+                  <span class="food-icon">🧊</span>
+                  <span class="food-icon">🧊</span>
+                  <span class="food-icon">🧊</span>
                 </div>
-                <div class="tray">
-                  <div class="food" title="베이컨 2개">
-                    <span class="food-icon">🥓</span>
-                    <span class="food-icon">🥓</span>
-                  </div>
-                </div>
-              </div>
-              <div class="face drawer-front">
-                <div class="handle"></div>
               </div>
             </div>
-            <div class="door">
+            <div style="--y:466">
+              <div class="shelf"></div>
+              <div class="shelf-row">
+                <div class="food" title="소고기 2개">
+                  <span class="food-icon">🥩</span>
+                  <span class="food-icon">🥩</span>
+                </div>
+                <div class="food" title="닭고기 2개">
+                  <span class="food-icon">🍗</span>
+                  <span class="food-icon">🍗</span>
+                </div>
+                <div class="food" title="베이컨 1개">
+                  <span class="food-icon">🥓</span>
+                </div>
+              </div>
+            </div>
+            <div class="face face-frame"></div>
+            <div class="face face-divider"></div>
+            <div class="door door-upper">
               <div class="face door-outer">
-                <div class="handle handle--door"></div>
+                <div class="handle"></div>
+                <div class="fridge-face">
+                  <span class="eye eye--left"></span>
+                  <span class="eye eye--right"></span>
+                  <span class="mouth"></span>
+                </div>
               </div>
               <div class="face door-edge"></div>
               <div class="face door-inner">
                 <div class="door-bin">
-                  <div class="food" title="달걀 5개">
-                    <span class="food-icon">🥚</span>
+                  <div class="food" title="달걀 4개">
                     <span class="food-icon">🥚</span>
                     <span class="food-icon">🥚</span>
                     <span class="food-icon">🥚</span>
@@ -281,8 +283,7 @@
                   <div class="door-bin-front"></div>
                 </div>
                 <div class="door-bin">
-                  <div class="food" title="소스 2개">
-                    <span class="food-icon">🧴</span>
+                  <div class="food" title="소스 1개">
                     <span class="food-icon">🧴</span>
                   </div>
                   <div class="food" title="식초 2개">
@@ -298,6 +299,30 @@
                   </div>
                   <div class="food" title="우유 1개">
                     <span class="food-icon">🥛</span>
+                  </div>
+                  <div class="door-bin-front"></div>
+                </div>
+              </div>
+            </div>
+            <div class="door door-lower">
+              <div class="face door-outer">
+                <div class="handle"></div>
+              </div>
+              <div class="face door-edge"></div>
+              <div class="face door-inner">
+                <div class="door-bin">
+                  <div class="food" title="만두 3개">
+                    <span class="food-icon">🥟</span>
+                    <span class="food-icon">🥟</span>
+                    <span class="food-icon">🥟</span>
+                  </div>
+                  <div class="door-bin-front"></div>
+                </div>
+                <div class="door-bin">
+                  <div class="food" title="얼음 3개">
+                    <span class="food-icon">🧊</span>
+                    <span class="food-icon">🧊</span>
+                    <span class="food-icon">🧊</span>
                   </div>
                   <div class="door-bin-front"></div>
                 </div>

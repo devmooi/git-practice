@@ -1,4 +1,9 @@
-import { fridgeShelves, fridgeFreezer, fridgeDoor } from "../utils/fridgeData";
+import {
+  fridgeShelves,
+  fridgeFreezer,
+  fridgeDoor,
+  freezerDoor,
+} from "../utils/fridgeData";
 import "../styles/fridge.css";
 
 // 재료 하나를 count 만큼 아이콘으로 펼쳐서 보여줌
@@ -19,81 +24,85 @@ const Food = ({ item }) => {
   );
 };
 
+// 선반 한 칸 (유리판 + 위에 놓인 재료)
+const Shelf = ({ shelf }) => (
+  <div style={{ "--y": shelf.y }}>
+    <div className="shelf" />
+    <div className="shelf-row">
+      {shelf.items.map((item, i) => (
+        <Food key={i} item={item} />
+      ))}
+    </div>
+  </div>
+);
+
+// 문 (바깥면 + 두께 + 안쪽 선반). 오른쪽 경첩으로 열림
+const Door = ({ className, bins, children }) => (
+  <div className={`door ${className}`}>
+    <div className="face door-outer">
+      <div className="handle" />
+      {children}
+    </div>
+    <div className="face door-edge" />
+    <div className="face door-inner">
+      {bins.map((bin) => (
+        <div key={bin.id} className="door-bin">
+          {bin.items.map((item, i) => (
+            <Food key={i} item={item} />
+          ))}
+          <div className="door-bin-front" />
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 const Box = () => {
   return (
     <div className="fridge-wrap">
-      {/* 보이지 않는 마우스 감지 영역: 위 = 문, 아래 = 냉동실
+      {/* 보이지 않는 마우스 감지 영역: 위 = 냉장실 문, 아래 = 냉동실 문
           tabIndex: 휴대폰 터치나 키보드 Tab 으로도 열 수 있게 */}
-      <div className="zone zone-door" tabIndex={0} aria-label="냉장고 문 열기" />
-      <div className="zone zone-freezer" tabIndex={0} aria-label="냉동실 열기" />
+      <div className="zone zone-door" tabIndex={0} aria-label="냉장실 문 열기" />
+      <div className="zone zone-freezer" tabIndex={0} aria-label="냉동실 문 열기" />
 
       <div className="scene">
         <div className="cabinet">
-          {/* ---- 몸체 바깥면 ---- */}
+          {/* ---- 바닥 그림자 + 다리 ---- */}
+          <div className="face floor-shadow" />
+          <div className="foot foot--left" />
+          <div className="foot foot--right" />
+
+          {/* ---- 몸체 ---- */}
           <div className="face face-back" />
           <div className="face face-top" />
           <div className="face ceiling-light" />
           <div className="face face-bottom" />
           <div className="face face-right" />
-          <div className="face face-left">
-            {/* 스마트 냉장고 신호 */}
-            <div className="signal">
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
+          <div className="face face-left" />
 
-          {/* ---- 선반 + 재료 ---- */}
+          {/* ---- 냉장실 / 냉동실 선반 ---- */}
           {fridgeShelves.map((shelf) => (
-            <div key={shelf.id} style={{ "--y": shelf.y }}>
-              <div className="shelf" />
-              <div className="shelf-row">
-                {shelf.items.map((item, i) => (
-                  <Food key={i} item={item} />
-                ))}
-              </div>
-            </div>
+            <Shelf key={shelf.id} shelf={shelf} />
+          ))}
+          <div className="face divider-floor" />
+          {fridgeFreezer.map((shelf) => (
+            <Shelf key={shelf.id} shelf={shelf} />
           ))}
 
-          {/* 앞쪽 테두리 */}
+          {/* 앞쪽 테두리 + 가운데 칸막이 */}
           <div className="face face-frame" />
+          <div className="face face-divider" />
 
-          {/* ---- 앞으로 빠진 냉동 서랍 ---- */}
-          <div className="freezer">
-            <div className="face drawer-bottom" />
-            <div className="face drawer-back" />
-            <div className="face drawer-left" />
-            <div className="face drawer-right" />
-            <div className="drawer-row">
-              {fridgeFreezer.map((item, i) => (
-                <div key={i} className="tray">
-                  <Food item={item} />
-                </div>
-              ))}
+          {/* ---- 문 2개 ---- */}
+          <Door className="door-upper" bins={fridgeDoor}>
+            {/* 귀여운 얼굴 */}
+            <div className="fridge-face">
+              <span className="eye eye--left" />
+              <span className="eye eye--right" />
+              <span className="mouth" />
             </div>
-            <div className="face drawer-front">
-              <div className="handle" />
-            </div>
-          </div>
-
-          {/* ---- 열린 문 ---- */}
-          <div className="door">
-            <div className="face door-outer">
-              <div className="handle handle--door" />
-            </div>
-            <div className="face door-edge" />
-            <div className="face door-inner">
-              {fridgeDoor.map((bin) => (
-                <div key={bin.id} className="door-bin">
-                  {bin.items.map((item, i) => (
-                    <Food key={i} item={item} />
-                  ))}
-                  <div className="door-bin-front" />
-                </div>
-              ))}
-            </div>
-          </div>
+          </Door>
+          <Door className="door-lower" bins={freezerDoor} />
         </div>
       </div>
     </div>

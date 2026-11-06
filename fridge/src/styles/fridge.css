@@ -1,30 +1,34 @@
 /* ============================================
-   3D 냉장고
+   귀여운 3D 냉장고
    모든 크기는 --u(1단위) 기준이라 화면에 맞게 줄어듦
    ============================================ */
 body {
   margin: 0;
-  background: #f3f1ec;
+  background: #f6f7fa;
 }
 
 .fridge-wrap {
   /* 화면이 좁으면 작아짐 */
   --u: min(1px, calc((100vw - 32px) / 620));
-  --W: calc(300 * var(--u)); /* 가로 */
-  --H: calc(460 * var(--u)); /* 높이 */
-  --D: calc(220 * var(--u)); /* 깊이 */
+  --W: calc(280 * var(--u)); /* 가로 */
+  --H: calc(480 * var(--u)); /* 높이 */
+  --D: calc(190 * var(--u)); /* 깊이 */
+  --split: 290;              /* 냉장실 / 냉동실 나누는 높이 */
+  --r: calc(26 * var(--u));  /* 둥근 모서리 */
 
-  --steel: linear-gradient(135deg, #dfe2e5 0%, #b9bec3 45%, #d4d8db 70%, #a9aeb4 100%);
-  --steel-dark: linear-gradient(135deg, #b4b9be 0%, #8f959b 100%);
-  --inside: #f7f8f9;
-  --glass: rgba(220, 235, 245, 0.45);
-  --glass-edge: rgba(150, 175, 195, 0.9);
+  --body: linear-gradient(160deg, #ffffff 0%, #eef0f5 55%, #e2e5ee 100%);
+  --body-side: linear-gradient(90deg, #d9dce6 0%, #eceef4 60%, #f4f5f9 100%);
+  --edge: #d3d7e2;
+  --inside: #f9fafc;
+  --glass: rgba(220, 232, 245, 0.45);
+  --glass-edge: rgba(160, 180, 205, 0.85);
+  --metal: linear-gradient(90deg, #8f96a3 0%, #e9ecf1 45%, #a9afba 100%);
 
   position: relative;
   width: calc(620 * var(--u));
-  height: calc(580 * var(--u));
+  height: calc(600 * var(--u));
   margin: 24px auto;
-  font-size: calc(36 * var(--u));
+  font-size: calc(34 * var(--u));
 }
 
 .scene {
@@ -35,7 +39,7 @@ body {
 }
 
 /* ---- 마우스 감지 영역 (보이지 않음) ----
-   위쪽에 올리면 문만, 아래쪽에 올리면 냉동실만 열림 */
+   위쪽에 올리면 냉장실 문, 아래쪽에 올리면 냉동실 문이 열림 */
 .zone {
   position: absolute;
   left: calc(60 * var(--u));
@@ -47,21 +51,21 @@ body {
 
 .zone-door {
   top: 0;
-  height: calc(330 * var(--u));
+  height: calc(305 * var(--u));
 }
 
 .zone-freezer {
-  top: calc(330 * var(--u));
-  height: calc(150 * var(--u));
+  top: calc(305 * var(--u));
+  height: calc(230 * var(--u));
 }
 
 .cabinet {
   position: relative;
   width: var(--W);
   height: var(--H);
-  margin: calc(60 * var(--u)) 0 0 calc(70 * var(--u));
+  margin: calc(50 * var(--u)) 0 0 calc(110 * var(--u));
   transform-style: preserve-3d;
-  transform: rotateX(-14deg) rotateY(22deg);
+  transform: rotateX(-12deg) rotateY(24deg);
 }
 
 .cabinet div {
@@ -76,7 +80,8 @@ body {
 /* ---- 몸체 ---- */
 .face-back {
   inset: 0;
-  background: linear-gradient(180deg, #ffffff, #e9ecef);
+  background: linear-gradient(180deg, #ffffff, #edf0f4);
+  border-radius: var(--r);
   transform: translateZ(calc(var(--D) / -2));
 }
 
@@ -86,17 +91,17 @@ body {
   left: calc((var(--W) - var(--D)) / 2);
   width: var(--D);
   height: var(--H);
+  border-radius: var(--r);
 }
 
 .face-left {
-  background: var(--steel);
+  background: var(--body-side);
   transform: rotateY(-90deg) translateZ(calc(var(--W) / 2));
-  border-radius: 4px;
 }
 
-/* 오른쪽 벽: 안쪽에서 보이는 면이라 밝은 색 */
+/* 오른쪽 벽: 안쪽에서 보이는 면 */
 .face-right {
-  background: linear-gradient(90deg, #e4e7ea, #f8f9fa);
+  background: linear-gradient(90deg, #eceef3, #fbfbfd);
   transform: rotateY(90deg) translateZ(calc(var(--W) / 2));
 }
 
@@ -106,11 +111,17 @@ body {
   top: calc((var(--H) - var(--D)) / 2);
   width: var(--W);
   height: var(--D);
+  border-radius: var(--r);
 }
 
 .face-top {
-  background: var(--steel);
+  background: linear-gradient(180deg, #f2f3f7, #ffffff);
   transform: rotateX(90deg) translateZ(calc(var(--H) / 2));
+}
+
+.face-bottom {
+  background: #e6e9f0;
+  transform: rotateX(-90deg) translateZ(calc(var(--H) / 2));
 }
 
 /* 천장 조명: 윗면 바로 아래(안쪽)에 붙어 있어서 밖에서는 안 보임 */
@@ -122,60 +133,65 @@ body {
   border-radius: 4px;
   background: #fff;
   box-shadow: 0 0 20px 8px rgba(255, 250, 225, 0.9);
-  transform: translateZ(calc(var(--D) * 0.1)) translateY(calc(4 * var(--u))) rotateX(90deg);
-}
-
-.face-bottom {
-  background: #dfe2e5;
-  transform: rotateX(-90deg) translateZ(calc(var(--H) / 2));
+  transform: translateZ(calc(var(--D) * 0.1)) translateY(calc(14 * var(--u))) rotateX(90deg);
 }
 
 /* 앞쪽 테두리 (가운데는 뚫려 있음) */
 .face-frame {
   inset: 0;
-  border: calc(9 * var(--u)) solid #c6cace;
-  border-bottom-width: calc(88 * var(--u)); /* 냉동칸 앞 */
-  border-radius: 4px;
+  border: calc(12 * var(--u)) solid #f1f2f6;
+  border-radius: var(--r);
   transform: translateZ(calc(var(--D) / 2));
   pointer-events: none;
 }
 
-/* ---- 스마트 신호 ---- */
-.signal {
+/* 냉장실 / 냉동실 칸막이 */
+.face-divider {
+  left: 0;
+  width: var(--W);
+  top: calc(var(--split) * var(--u) - 6 * var(--u));
+  height: calc(12 * var(--u));
+  background: #eceef3;
+  transform: translateZ(calc(var(--D) / 2));
+}
+
+.divider-floor {
+  left: 0;
+  width: var(--W);
+  height: var(--D);
+  top: calc(var(--split) * var(--u) - var(--D) / 2);
+  background: #eef0f4;
+  transform: rotateX(90deg);
+}
+
+/* ---- 바닥 그림자 + 다리 ---- */
+.floor-shadow {
+  left: -10%;
+  width: 120%;
+  height: calc(var(--D) * 1.3);
+  top: calc(var(--H) + 10 * var(--u) - var(--D) * 0.65);
+  background: radial-gradient(closest-side, rgba(40, 50, 80, 0.22), transparent);
+  transform: rotateX(90deg);
+}
+
+.foot {
   position: absolute;
-  left: 50%;
-  top: 46%;
+  top: var(--H);
+  width: calc(22 * var(--u));
+  height: calc(14 * var(--u));
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, #b9bfcb, #9aa1ae);
+  transform: translateZ(calc(var(--D) / 2 - 2 * var(--u)));
 }
 
-.signal span {
-  position: absolute;
-  border: calc(4 * var(--u)) solid rgba(255, 255, 255, 0.85);
-  border-color: transparent rgba(255, 255, 255, 0.85);
-  border-radius: 50%;
-  animation: pulse 2.4s ease-out infinite;
-}
-
-.signal span:nth-child(1) { --s: 30; animation-delay: 0s; }
-.signal span:nth-child(2) { --s: 60; animation-delay: 0.3s; }
-.signal span:nth-child(3) { --s: 90; animation-delay: 0.6s; }
-
-.signal span {
-  width: calc(var(--s) * var(--u));
-  height: calc(var(--s) * var(--u));
-  left: calc(var(--s) * var(--u) / -2);
-  top: calc(var(--s) * var(--u) / -2);
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 1; }
-}
+.foot--left { left: calc(18 * var(--u)); }
+.foot--right { right: calc(18 * var(--u)); }
 
 /* ---- 선반 ---- */
 .shelf {
   position: absolute;
-  left: calc(6 * var(--u));
-  width: calc(var(--W) - 12 * var(--u));
+  left: calc(10 * var(--u));
+  width: calc(var(--W) - 20 * var(--u));
   height: var(--D);
   top: calc(var(--y) * var(--u) - var(--D) / 2);
   background: var(--glass);
@@ -188,12 +204,12 @@ body {
   position: absolute;
   left: calc(28 * var(--u));
   right: calc(34 * var(--u));
-  height: calc(90 * var(--u));
-  top: calc(var(--y) * var(--u) - 90 * var(--u));
+  height: calc(80 * var(--u));
+  top: calc(var(--y) * var(--u) - 80 * var(--u));
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
-  transform: translateZ(calc(var(--D) * 0.25));
+  transform: translateZ(calc(var(--D) * 0.22));
 }
 
 /* ---- 재료 ---- */
@@ -217,127 +233,63 @@ body {
   font-size: 0.75em;
 }
 
-/* ---- 냉동 서랍 (앞으로 빠짐) ---- */
-.freezer {
-  --dw: calc(var(--W) - 20 * var(--u));
-  --dh: calc(70 * var(--u));
-  --dd: calc(var(--D) - 20 * var(--u));
-
-  position: absolute;
-  left: calc(10 * var(--u));
-  top: calc(380 * var(--u));
-  width: var(--dw);
-  height: var(--dh);
-  /* 닫힘: 앞판이 냉장고 앞면에 딱 맞게 */
-  transform: translateZ(calc(var(--D) / 2 - var(--dd) / 2 + 2 * var(--u)));
-  transition: transform 0.6s ease;
-}
-
-/* 열림: 서랍이 앞으로 빠져나옴 */
-.zone-freezer:hover ~ .scene .freezer,
-.zone-freezer:focus ~ .scene .freezer {
-  transform: translateZ(calc(var(--D) / 2 + 60 * var(--u)));
-}
-
-.drawer-bottom {
-  left: 0;
-  width: var(--dw);
-  height: var(--dd);
-  top: calc((var(--dh) - var(--dd)) / 2);
-  background: #e9edf0;
-  transform: rotateX(-90deg) translateZ(calc(var(--dh) / 2));
-}
-
-.drawer-back {
-  inset: 0;
-  background: #dde1e5;
-  transform: translateZ(calc(var(--dd) / -2));
-}
-
-.drawer-left,
-.drawer-right {
-  top: 0;
-  height: var(--dh);
-  width: var(--dd);
-  left: calc((var(--dw) - var(--dd)) / 2);
-  background: rgba(215, 225, 232, 0.85);
-  border: 1px solid var(--glass-edge);
-}
-
-.drawer-left { transform: rotateY(-90deg) translateZ(calc(var(--dw) / 2)); }
-.drawer-right { transform: rotateY(90deg) translateZ(calc(var(--dw) / 2)); }
-
-.drawer-row {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  padding-bottom: calc(6 * var(--u));
-  transform: translateZ(calc(var(--dd) * 0.05));
-  font-size: 0.85em;
-}
-
-/* 고기 트레이 */
-.tray {
-  padding: 0.05em 0.12em 0.08em;
-  border-radius: 0.15em;
-  background: #fff;
-  box-shadow: inset 0 -0.1em 0 #d5d9dd, 0 2px 3px rgba(0, 0, 0, 0.15);
-}
-
-/* 서랍 앞판: 투명 유리 + 손잡이 */
-.drawer-front {
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 42%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(205, 215, 222, 0.85));
-  border: 1px solid var(--glass-edge);
-  transform: translateZ(calc(var(--dd) / 2));
-}
-
-.handle {
-  position: absolute;
-  left: 30%;
-  right: 30%;
-  top: 30%;
-  height: calc(7 * var(--u));
-  border-radius: 4px;
-  background: var(--steel-dark);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
-}
-
 /* ---- 문 (오른쪽 경첩으로 열림) ---- */
-/* 평소에는 닫혀 있다가, 마우스를 올리면 열림 */
 .door {
   position: absolute;
   left: 0;
-  top: 0;
   width: var(--W);
-  height: calc(374 * var(--u)); /* 냉동 서랍 위까지만 */
   transform-origin: 100% 50%;
-  transform: translateZ(calc(var(--D) / 2 + 1 * var(--u))) rotateY(0deg);
+  transform: translateZ(calc(var(--D) / 2 + 6 * var(--u))) rotateY(0deg);
   transition: transform 0.8s cubic-bezier(0.3, 0.9, 0.3, 1);
 }
 
-.zone-door:hover ~ .scene .door,
-.zone-door:focus ~ .scene .door {
-  transform: translateZ(calc(var(--D) / 2 + 1 * var(--u))) rotateY(100deg);
+/* 위 문: 냉장실 */
+.door-upper {
+  top: 0;
+  height: calc(var(--split) * var(--u) - 3 * var(--u));
+  --r-top: var(--r);
+  --r-bottom: calc(8 * var(--u));
+}
+
+/* 아래 문: 냉동실 */
+.door-lower {
+  top: calc(var(--split) * var(--u) + 3 * var(--u));
+  height: calc(var(--H) - var(--split) * var(--u) - 3 * var(--u));
+  --r-top: calc(8 * var(--u));
+  --r-bottom: var(--r);
+}
+
+.zone-door:hover ~ .scene .door-upper,
+.zone-door:focus ~ .scene .door-upper,
+.zone-freezer:hover ~ .scene .door-lower,
+.zone-freezer:focus ~ .scene .door-lower {
+  transform: translateZ(calc(var(--D) / 2 + 6 * var(--u))) rotateY(100deg);
 }
 
 .door-outer {
   inset: 0;
-  background: var(--steel);
-  border-radius: 4px;
+  background: var(--body);
+  border-radius: var(--r-top) var(--r-top) var(--r-bottom) var(--r-bottom);
+  box-shadow: inset 0 0 0 1px rgba(200, 205, 220, 0.6),
+    inset -6px -8px 18px rgba(170, 178, 200, 0.25);
 }
 
-.handle--door {
-  left: calc(14 * var(--u));
-  right: auto;
-  top: 30%;
-  width: calc(8 * var(--u));
-  height: 30%;
+/* 은색 손잡이 (왼쪽) */
+.handle {
+  position: absolute;
+  left: calc(18 * var(--u));
+  width: calc(10 * var(--u));
+  top: 22%;
+  height: 56%;
+  max-height: calc(130 * var(--u));
+  border-radius: 99px;
+  background: var(--metal);
+  box-shadow: 2px 3px 4px rgba(60, 70, 90, 0.3);
+}
+
+.door-lower .handle {
+  top: 18%;
+  height: 50%;
 }
 
 /* 문 두께 (열린 쪽 모서리) */
@@ -346,7 +298,8 @@ body {
   left: calc(-9 * var(--u));
   width: calc(18 * var(--u));
   height: 100%;
-  background: var(--steel-dark);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #e7e9f0, #d6dae4);
   transform: translateZ(calc(-9 * var(--u))) rotateY(-90deg);
 }
 
@@ -356,10 +309,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: calc(30 * var(--u)) calc(22 * var(--u)) calc(30 * var(--u));
-  background: linear-gradient(90deg, #f6f7f8, #e2e5e8);
-  border: calc(9 * var(--u)) solid #c6cace;
-  border-radius: 4px;
+  padding: calc(22 * var(--u)) calc(22 * var(--u));
+  background: linear-gradient(90deg, #fbfbfd, #eceef3);
+  border: calc(9 * var(--u)) solid #e8eaf0;
+  border-radius: var(--r-top) var(--r-top) var(--r-bottom) var(--r-bottom);
   transform: translateZ(calc(-18 * var(--u))) rotateY(180deg);
 }
 
@@ -369,8 +322,8 @@ body {
   align-items: flex-end;
   justify-content: center;
   gap: 0.2em;
-  padding: 0 0 calc(10 * var(--u));
-  font-size: 0.9em;
+  padding: 0 0 calc(8 * var(--u));
+  font-size: 0.8em;
   transform: translateZ(calc(16 * var(--u)));
 }
 
@@ -383,4 +336,80 @@ body {
   background: var(--glass);
   border: calc(2 * var(--u)) solid var(--glass-edge);
   border-radius: 2px 2px 5px 5px;
+}
+
+/* ---- 귀여운 얼굴 ---- */
+.fridge-face {
+  position: absolute;
+  left: 30%;
+  right: 6%;
+  top: 30%;
+  height: calc(70 * var(--u));
+}
+
+.eye {
+  position: absolute;
+  top: 0;
+  width: calc(30 * var(--u));
+  height: calc(32 * var(--u));
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 60%, #4a3a3c 0%, #2a1f22 70%);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  animation: blink 4s infinite;
+}
+
+.eye--left { left: 14%; }
+.eye--right { right: 14%; }
+
+/* 눈 반짝임 */
+.eye::before,
+.eye::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.eye::before {
+  left: 18%;
+  top: 18%;
+  width: 34%;
+  height: 34%;
+}
+
+.eye::after {
+  right: 22%;
+  bottom: 22%;
+  width: 14%;
+  height: 14%;
+}
+
+/* 웃는 입 */
+.mouth {
+  position: absolute;
+  left: 50%;
+  top: calc(40 * var(--u));
+  width: calc(28 * var(--u));
+  height: calc(18 * var(--u));
+  margin-left: calc(-14 * var(--u));
+  border-radius: 4px 4px 50% 50% / 4px 4px 100% 100%;
+  background: #7a2630;
+  overflow: hidden;
+}
+
+/* 혀 */
+.mouth::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: -20%;
+  height: 65%;
+  border-radius: 50%;
+  background: #f08a96;
+}
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
 }
