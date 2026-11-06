@@ -1,4 +1,4 @@
 import { createRoot } from "react-dom/client";
-import Box from "./components/Box";
+import App from "./App";
 
-createRoot(document.getElementById("root")).render(<Box />);
+createRoot(document.getElementById("root")).render(<App />);
