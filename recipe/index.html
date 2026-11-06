@@ -40,40 +40,50 @@
             margin-bottom: 20px;
         }
 
-        .input-group {
+        /* 둥근 검색창 (돋보기 + 입력칸) */
+        .search-box {
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
+            height: 52px;
+            padding: 0 22px;
             margin-bottom: 20px;
+            border: 2px solid #7aa75a;
+            border-radius: 999px;
+            background: #fff;
+            cursor: text;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        input[type="text"] {
+        .search-box:focus-within {
+            border-color: #4f8a2b;
+            box-shadow: 0 0 0 3px rgba(79, 138, 43, 0.15);
+        }
+
+        .search-box svg {
+            flex: none;
+            width: 26px;
+            height: 26px;
+            fill: none;
+            stroke: #8ab56a;
+            stroke-width: 2.4;
+            stroke-linecap: round;
+        }
+
+        .search-box input {
             flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--primary-color);
-        }
-
-        button {
-            padding: 12px 20px;
-            background-color: var(--primary-color);
-            color: white;
+            min-width: 0;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
+            outline: none;
+            background: none;
+            font: inherit;
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
         }
 
-        button:hover {
-            background-color: #45a049;
+        .search-box input::placeholder {
+            color: #b0b0b0;
         }
 
         .tags-container {
@@ -152,11 +162,14 @@
 <div class="container">
     <h1>재료 맞춤 추천 레시피</h1>
     
-    <!-- 재료 입력 창 -->
-    <div class="input-group">
-        <input type="text" id="ingredient-input" placeholder="예: 김치, 계란, 스팸 (쉼표로 구분 가능)">
-        <button id="add-btn">추가</button>
-    </div>
+    <!-- 검색창: 입력하고 Enter 를 누르면 태그로 추가 (쉼표로 여러 개 가능) -->
+    <label class="search-box">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m16.5 16.5 4 4" />
+        </svg>
+        <input type="search" id="ingredient-input" placeholder="레시피나 재료를 검색해보세요" aria-label="레시피나 재료 검색" enterkeyhint="search">
+    </label>
 
     <!-- 입력된 재료 태그가 보이지는 곳 -->
     <div class="tags-container" id="tags-container"></div>
@@ -354,7 +367,6 @@
     let currentIngredients = [];
 
     const input = document.getElementById('ingredient-input');
-    const addBtn = document.getElementById('add-btn');
     const tagsContainer = document.getElementById('tags-container');
     const recipeList = document.getElementById('recipe-list');
 
@@ -400,17 +412,19 @@
         // 재료가 없으면 결과도 비워둠
         if (currentIngredients.length === 0) return;
 
-        // 재료 매칭 개수가 많은 순서대로 필터링 및 정렬
+        // 레시피 이름이 맞거나 재료가 겹치는 레시피 찾기
+        // (이름이 맞는 레시피 먼저, 그다음 재료가 많이 겹치는 순서)
         const results = recipeDatabase
             .map(recipe => {
                 const matched = recipe.ingredients.filter(ing => currentIngredients.includes(ing));
-                return { ...recipe, matchCount: matched.length, matchedIngredients: matched };
+                const titleMatch = currentIngredients.some(word => recipe.title.includes(word));
+                return { ...recipe, matchCount: matched.length, matchedIngredients: matched, titleMatch };
             })
-            .filter(recipe => recipe.matchCount > 0)
-            .sort((a, b) => b.matchCount - a.matchCount);
+            .filter(recipe => recipe.matchCount > 0 || recipe.titleMatch)
+            .sort((a, b) => (b.titleMatch - a.titleMatch) || (b.matchCount - a.matchCount));
 
         if (results.length === 0) {
-            recipeList.innerHTML = "<p style='text-align:center; color:#999;'>일치하는 레시피가 없습니다. 다른 재료를 입력해보세요!</p>";
+            recipeList.innerHTML = "<p style='text-align:center; color:#999;'>일치하는 레시피가 없습니다. 다른 레시피나 재료를 입력해보세요!</p>";
             return;
         }
 
@@ -420,7 +434,9 @@
             card.className = 'recipe-card';
             card.innerHTML = `
                 <div class="recipe-title">🍳 ${recipe.title}</div>
-                <div class="recipe-match">보유 재료 매칭: ${recipe.matchedIngredients.join(', ')} (${recipe.matchCount}/${recipe.ingredients.length})</div>
+                <div class="recipe-match">${recipe.matchCount > 0
+                    ? `보유 재료 매칭: ${recipe.matchedIngredients.join(', ')} (${recipe.matchCount}/${recipe.ingredients.length})`
+                    : `재료: ${recipe.ingredients.join(', ')}`}</div>
                 <p style="margin: 0; line-height: 1.6; font-size:14px; color:#555;">${recipe.recipe}</p>
             `;
             recipeList.appendChild(card);
@@ -428,7 +444,6 @@
     }
 
     // 이벤트 리스너 연결
-    addBtn.addEventListener('click', addIngredients);
     input.addEventListener('keypress', (e) => { if (e.key === 'Enter') addIngredients(); });
 </script>
 
