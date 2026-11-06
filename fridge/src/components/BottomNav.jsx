@@ -45,20 +45,23 @@ const tabs = [
 const BottomNav = ({ active, onSelect }) => {
   return (
     <nav className="bottom-nav">
-      {tabs.map((tab) => (
-        <button
-          key={tab.id}
-          type="button"
-          className={tab.id === active ? "nav-btn is-active" : "nav-btn"}
-          aria-label={tab.label}
-          aria-current={tab.id === active ? "page" : undefined}
-          onClick={() => onSelect(tab.id)}
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            {tab.icon}
-          </svg>
-        </button>
-      ))}
+      {/* 아이콘 줄: 360 x 40, 아이콘 사이 65px */}
+      <div className="nav-icons">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            className={tab.id === active ? "nav-btn is-active" : "nav-btn"}
+            aria-label={tab.label}
+            aria-current={tab.id === active ? "page" : undefined}
+            onClick={() => onSelect(tab.id)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              {tab.icon}
+            </svg>
+          </button>
+        ))}
+      </div>
     </nav>
   );
 };
