@@ -217,11 +217,21 @@ body {
   display: flex;
   align-items: flex-end;
   line-height: 1;
-  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* 식재료 그림 */
+.food-icon {
+  display: block;
+  height: 1.3em;
+  width: auto;
+  max-width: 1.6em;
+  object-fit: contain;
+  user-select: none;
 }
 
 .food-icon + .food-icon {
-  margin-left: -0.25em;
+  margin-left: -0.45em;
 }
 
 .food--bowl {
@@ -322,8 +332,8 @@ body {
   align-items: flex-end;
   justify-content: center;
   gap: 0.2em;
-  padding: 0 0 calc(8 * var(--u));
-  font-size: 0.8em;
+  padding: 0 0 calc(6 * var(--u));
+  font-size: 1.05em;
   transform: translateZ(calc(16 * var(--u)));
 }
 

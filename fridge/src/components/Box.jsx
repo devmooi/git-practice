@@ -6,12 +6,19 @@ import {
 } from "../utils/fridgeData";
 import "../styles/fridge.css";
 
-// 재료 하나를 count 만큼 아이콘으로 펼쳐서 보여줌
+// 식재료 그림이 있는 폴더 (public/icons)
+const ICON_PATH = `${import.meta.env.BASE_URL}icons/`;
+
+// 재료 하나를 count 만큼 그림으로 펼쳐서 보여줌
 const Food = ({ item }) => {
   const icons = Array.from({ length: item.count }, (_, i) => (
-    <span key={i} className="food-icon">
-      {item.icon}
-    </span>
+    <img
+      key={i}
+      className="food-icon"
+      src={`${ICON_PATH}${item.icon}.png`}
+      alt={i === 0 ? item.name : ""}
+      draggable={false}
+    />
   ));
 
   return (
