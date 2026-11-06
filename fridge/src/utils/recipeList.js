@@ -1,5 +1,5 @@
 // 레시피창_1 (Figma) 데이터
-// 위치/크기 숫자는 Figma 값 그대로 (px, 카드 안쪽 기준)
+// 위치/크기 숫자는 Figma 값 (px, 카드 안쪽 기준). 레시피 사진 위치만 디자인 화면에 맞춤
 //
 // image: public/figma 폴더에 Figma 에서 내보낸 그림을 같은 이름으로 넣으면 그 그림이 보이고,
 //        없으면 fallback 아이콘(public/icons)이 대신 보임
@@ -30,7 +30,7 @@ export const recipeCards = [
     height: 139,
     image: "Capture_2026_1105_100620",
     fallback: "radish",
-    img: { left: 0, top: 0, w: 138, h: 138, radius: 5 },
+    img: { left: 15.5, top: 4.5, w: 129, h: 129, radius: 2 },
     title: "무생채 만드는 법, 절이지 않고 10분 만에 휘리릭~",
     titleBox: { left: 149.88, top: 9.57, w: 238.12, h: 44.65 },
     author: "뽕림이",
@@ -46,7 +46,7 @@ export const recipeCards = [
     height: 130,
     image: "Capture_2026_1105_100644",
     fallback: "tofu",
-    img: { left: 0, top: 0, w: 130, h: 129, radius: 5 },
+    img: { left: 13.5, top: 5, w: 122, h: 121.5, radius: 2 },
     title: "순두부찌개. 바지락, 고기 없이도 기가 막힌 순두부찌개 만드는 법 . . .",
     titleBox: { left: 150, top: 9, w: 220, h: 42 },
     author: "케이쿡",
@@ -62,7 +62,7 @@ export const recipeCards = [
     height: 130,
     image: "Capture_2026_1105_100706",
     fallback: "beef",
-    img: { left: 0, top: 2, w: 130, h: 126, radius: 5 },
+    img: { left: 13.5, top: 4.5, w: 121.5, h: 122, radius: 2 },
     title: "엄마의 레시피, 소고기 미역국 끓이는 법^^",
     titleBox: { left: 154, top: 12, w: 218, h: 42 },
     author: "베리츄",
@@ -78,7 +78,7 @@ export const recipeCards = [
     height: 130,
     image: "Capture_2026_1105_100726",
     fallback: "chili",
-    img: { left: 0, top: -1, w: 130, h: 131, radius: 0 },
+    img: { left: 14, top: 3, w: 124, h: 124, radius: 2 },
     title: "닭볶음탕 진짜진짜 황금레시피 알려 드려요 ~~ ^^",
     titleBox: { left: 153, top: 5, w: 226, h: 42 },
     author: "주부9단요리톡톡",
