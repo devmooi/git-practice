@@ -351,8 +351,9 @@ body {
 /* ---- 귀여운 얼굴 ---- */
 .fridge-face {
   position: absolute;
-  left: 30%;
-  right: 6%;
+  /* 문 가운데 (양쪽 여백 같게) */
+  left: 18%;
+  right: 18%;
   top: 30%;
   height: calc(70 * var(--u));
 }
