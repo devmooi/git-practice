@@ -263,7 +263,7 @@
         }
 
         .fridge-box .fridge-wrap {
-            --u: calc(100cqw / 600);
+            --u: calc(100cqw / 545); /* 600 → 545: 냉장고 약 10% 크게 */
             width: 100%;
             height: calc(560 * var(--u));
             margin: 0;
@@ -284,7 +284,7 @@
         }
 
         .fridge-box .cabinet {
-            margin: calc(30 * var(--u)) 0 0 calc(184 * var(--u));
+            margin: calc(30 * var(--u)) 0 0 calc(156 * var(--u));
             transition: transform 0.8s cubic-bezier(0.3, 0.9, 0.3, 1);
         }
 
@@ -293,7 +293,7 @@
         .fridge-box .zone-door:focus ~ .scene .cabinet,
         .fridge-box .zone-freezer:hover ~ .scene .cabinet,
         .fridge-box .zone-freezer:focus ~ .scene .cabinet {
-            transform: translateX(calc(-107 * var(--u))) rotateX(-12deg) rotateY(24deg);
+            transform: translateX(calc(-103 * var(--u))) rotateX(-12deg) rotateY(24deg);
         }
     </style>
 </head>

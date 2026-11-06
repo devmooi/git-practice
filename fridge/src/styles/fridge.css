@@ -273,7 +273,7 @@ body {
 .zone-door:focus ~ .scene .door-upper,
 .zone-freezer:hover ~ .scene .door-lower,
 .zone-freezer:focus ~ .scene .door-lower {
-  transform: translateZ(calc(var(--D) / 2 + 6 * var(--u))) rotateY(100deg);
+  transform: translateZ(calc(var(--D) / 2 + 6 * var(--u))) rotateY(92deg);
 }
 
 .door-outer {
