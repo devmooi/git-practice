@@ -10,9 +10,15 @@
     <style>
         :root {
             --primary-color: #4CAF50;
-            --bg-color: #f7f9fc;
-            --card-color: #ffffff;
+            --bg-color: #F2F2F2;
             --text-color: #333;
+            /* 앱 화면 크기 */
+            --app-w: 420px;
+            --app-h: 912px;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
@@ -20,18 +26,24 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
         }
 
+        /* 앱 화면: 420 x 912 (화면이 더 작으면 화면에 꽉 차게), 안쪽만 스크롤 */
         .container {
-            max-width: 600px;
-            width: 100%;
-            background: var(--card-color);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            width: min(var(--app-w), 100vw);
+            height: min(var(--app-h), 100dvh);
+            margin: 0 auto;
+            padding: 24px 20px;
+            background: var(--bg-color);
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* 넓은 화면에서는 앱 화면의 테두리가 보이게 */
+        @media (min-width: 440px) {
+            .container {
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 8px 30px rgba(0, 0, 0, 0.06);
+            }
         }
 
         /* 상단: 뒤로가기 + 로고 + 제목 */
@@ -185,16 +197,45 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 냉장고: 카드 너비에 맞게 크기 조절 */
+        /* 냉장고: 앱 너비에 맞게 크기를 맞추고, 닫혀 있을 때 가운데에 오게 함
+           (fridge 앱의 app.css 와 같은 값) */
         .fridge-box {
             container-type: inline-size;
             margin: 10px 0 20px;
         }
 
         .fridge-box .fridge-wrap {
-            --u: min(1px, calc(100cqw / 620));
+            --u: calc(100cqw / 600);
+            width: 100%;
             height: calc(560 * var(--u));
-            margin: 0 auto;
+            margin: 0;
+        }
+
+        .fridge-box .zone {
+            left: 0;
+            width: 100%;
+        }
+
+        .fridge-box .zone-door {
+            height: calc(285 * var(--u));
+        }
+
+        .fridge-box .zone-freezer {
+            top: calc(285 * var(--u));
+            height: calc(275 * var(--u));
+        }
+
+        .fridge-box .cabinet {
+            margin: calc(30 * var(--u)) 0 0 calc(184 * var(--u));
+            transition: transform 0.8s cubic-bezier(0.3, 0.9, 0.3, 1);
+        }
+
+        /* 문이 열리면 냉장고를 왼쪽으로 살짝 밀어서 열린 문까지 화면 안에 들어오게 */
+        .fridge-box .zone-door:hover ~ .scene .cabinet,
+        .fridge-box .zone-door:focus ~ .scene .cabinet,
+        .fridge-box .zone-freezer:hover ~ .scene .cabinet,
+        .fridge-box .zone-freezer:focus ~ .scene .cabinet {
+            transform: translateX(calc(-107 * var(--u))) rotateX(-12deg) rotateY(24deg);
         }
     </style>
 </head>

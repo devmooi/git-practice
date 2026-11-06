@@ -9,6 +9,9 @@
   --text: #111;
   --muted: #9a9a9a;
   --nav-h: 76px;
+  /* 앱 화면 크기 */
+  --app-w: 420px;
+  --app-h: 912px;
 }
 
 * {
@@ -22,14 +25,31 @@ body {
   font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 
-/* 휴대폰 화면 너비의 한 줄 (넓은 화면에서는 가운데) */
+/* 앱 화면: 420 x 912 (화면이 더 작으면 화면에 꽉 차게)
+   헤더는 위, 하단 탭은 아래에 붙고 가운데만 스크롤 */
 .app {
-  max-width: 480px;
-  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--app-w), 100vw);
+  height: min(var(--app-h), 100dvh);
   margin: 0 auto;
-  padding-bottom: calc(var(--nav-h) + 16px);
   background: var(--bg);
+  overflow: hidden;
+}
+
+/* 넓은 화면에서는 앱 화면의 테두리가 보이게 */
+@media (min-width: 440px) {
+  .app {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 8px 30px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.app-main {
+  flex: 1;
+  min-height: 0;
   overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 16px;
 }
 
 /* ---- 헤더 ---- */
@@ -219,17 +239,15 @@ body {
 }
 
 /* ---- 하단 탭 ---- */
+/* 앱 화면 맨 아래에 붙음 */
 .bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
+  flex: none;
   z-index: 10;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  width: min(100%, 480px);
+  width: 100%;
   height: var(--nav-h);
   padding-bottom: env(safe-area-inset-bottom);
-  transform: translateX(-50%);
   background: #fff;
   border-top: 1px solid #ddd;
 }
