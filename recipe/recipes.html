@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레시피창</title>
+    <link rel="icon" type="image/png" href="../fridge/public/logo.png">
+    <!-- 글꼴 (Figma) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inika&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=42dot+Sans&display=swap">
+    <!-- 스타일: ../fridge 앱의 CSS 를 그대로 사용 -->
+    <link rel="stylesheet" href="../fridge/src/styles/app.css">
+    <link rel="stylesheet" href="../fridge/src/styles/recipeList.css">
+</head>
+<body>
+
+<!-- 레시피창_1 : fridge 앱의 RecipeListPage 를 HTML 로 옮긴 것 -->
+<div class="app">
+  <div class="recipe-page-wrap">
+    <div style="height:852px;overflow:hidden">
+      <div class="recipe-page" style="transform:scale(1)">
+        <header class="rp-header">
+          <div class="rp-header-bg"></div>
+          <button type="button" class="rp-back" aria-label="뒤로가기">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18 9 12l6-6"></path>
+            </svg>
+          </button>
+          <img class="rp-logo" src="../fridge/public/logo.png" alt=""/>
+          <label class="rp-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m16.5 16.5 4 4"></path>
+            </svg>
+            <input type="search" placeholder="냉장고 안 재료를 검색해보세요" aria-label="냉장고 안 재료 검색"/>
+          </label>
+        </header>
+        <section class="rp-category" aria-label="레시피 분류">
+          <h2 class="rp-category-title">레시피 분류</h2>
+          <button type="button" class="chevron chevron--left" aria-label="이전 분류">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18 9 12l6-6"></path>
+            </svg>
+          </button>
+          <button type="button" class="chevron chevron--right" aria-label="다음 분류">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18 9 12l6-6"></path>
+            </svg>
+          </button>
+          <button type="button" class="rp-cat" aria-label="전체">
+            <img class="rp-cat-img" style="left:40px;width:37px;height:39px;top:calc(50% - 19.5px - 0.5px)" src="../fridge/public/figma/Capture_2026_1105_111106.png" alt=""/>
+            <span class="rp-cat-label" style="left:33px;top:80px;width:19px">전체</span>
+          </button>
+          <button type="button" class="rp-cat" aria-label="밑반찬">
+            <img class="rp-cat-img" style="left:84px;width:37px;height:39px;top:calc(50% - 19.5px - 0.5px)" src="../fridge/public/figma/Capture_2026_1105_111123.png" alt=""/>
+            <span class="rp-cat-label" style="left:79px;top:80px;width:27px">밑반찬</span>
+          </button>
+          <button type="button" class="rp-cat" aria-label="메인반찬">
+            <img class="rp-cat-img" style="left:132px;width:37px;height:35px;top:calc(50% - 17.5px - 0.5px)" src="../fridge/public/figma/Capture_2026_1105_111219.png" alt=""/>
+            <span class="rp-cat-label" style="left:128px;top:80px;width:36px">메인반찬</span>
+          </button>
+          <button type="button" class="rp-cat" aria-label="국/탕">
+            <img class="rp-cat-img" style="left:178px;width:37px;height:35px;top:calc(50% - 17.5px - 0.5px)" src="../fridge/public/figma/Capture_2026_1105_111227.png" alt=""/>
+            <span class="rp-cat-label" style="left:193px;top:80px;width:22px">국/탕</span>
+          </button>
+          <button type="button" class="rp-cat" aria-label="찌개">
+            <img class="rp-cat-img" style="left:230px;width:37px;height:35px;top:calc(50% - 17.5px - 0.5px)" src="../fridge/public/figma/Capture_2026_1105_111234.png" alt=""/>
+            <span class="rp-cat-label" style="left:249px;top:80px;width:19px">찌개</span>
+          </button>
+          <button type="button" class="rp-cat" aria-label="초스피드">
+            <img class="rp-cat-img" style="left:276px;width:37px;height:35px;top:calc(50% - 17.5px - 0.5px)" src="../fridge/public/figma/Capture_2026_1105_111248.png" alt=""/>
+            <span class="rp-cat-label" style="left:292px;top:81px;width:36px">초스피드</span>
+          </button>
+          <button type="button" class="rp-cat" aria-label="손님접대">
+            <img class="rp-cat-img" style="left:324px;width:37px;height:35px;top:calc(50% - 17.5px - 0.5px)" src="../fridge/public/figma/Capture_2026_1105_111259.png" alt=""/>
+            <span class="rp-cat-label" style="left:343px;top:80px;width:36px">손님접대</span>
+          </button>
+        </section>
+        <article class="recipe-card-f" style="top:185px;height:139px">
+          <img class="rc-img" style="left:15.5px;top:4.5px;width:129px;height:129px;border-radius:2px" src="../fridge/public/figma/Capture_2026_1105_100620.png" alt=""/>
+          <h3 class="rc-title" style="left:149.88px;top:9.57px;width:238.12px;height:44.65px">무생채 만드는 법, 절이지 않고 10분 만에 휘리릭~</h3>
+          <span class="rc-avatar" style="left:153.07px;top:70.16px;width:26.58px;height:26.58px"></span>
+          <span class="rc-author" style="left:191.34px;top:73.35px;height:20.2px">뽕림이</span>
+          <span class="rc-star" style="left:149.88px;top:113.74px;width:13.82px;height:13.82px"></span>
+          <span class="rc-star" style="left:164.77px;top:113.74px;width:13.82px;height:13.82px"></span>
+          <span class="rc-star" style="left:179.65px;top:113.74px;width:13.82px;height:13.82px"></span>
+          <span class="rc-star" style="left:195.59px;top:113.74px;width:13.82px;height:13.82px"></span>
+          <span class="rc-star" style="left:209.41px;top:113.74px;width:13.82px;height:13.82px"></span>
+          <span class="rc-views" style="left:234.93px;top:111.62px;height:19.13px">(958)조회수 369.7만</span>
+        </article>
+        <article class="recipe-card-f" style="top:348px;height:130px">
+          <img class="rc-img" style="left:13.5px;top:5px;width:122px;height:121.5px;border-radius:2px" src="../fridge/public/figma/Capture_2026_1105_100644.png" alt=""/>
+          <h3 class="rc-title" style="left:150px;top:9px;width:220px;height:42px">순두부찌개. 바지락, 고기 없이도 기가 막힌 순두부찌개 만드는 법 . . .</h3>
+          <span class="rc-avatar" style="left:161px;top:65px;width:25px;height:25px"></span>
+          <span class="rc-author" style="left:197px;top:68px;height:19px">케이쿡</span>
+          <span class="rc-star" style="left:158px;top:106px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:172px;top:106px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:186px;top:106px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:201px;top:106px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:214px;top:106px;width:13px;height:13px"></span>
+          <span class="rc-views" style="left:238px;top:104px;height:18px">(1,849)조회수 452.7만</span>
+        </article>
+        <article class="recipe-card-f" style="top:502px;height:130px">
+          <img class="rc-img" style="left:13.5px;top:4.5px;width:121.5px;height:122px;border-radius:2px" src="../fridge/public/figma/Capture_2026_1105_100706.png" alt=""/>
+          <h3 class="rc-title" style="left:154px;top:12px;width:218px;height:42px">엄마의 레시피, 소고기 미역국 끓이는 법^^</h3>
+          <span class="rc-avatar" style="left:166px;top:61px;width:25px;height:25px"></span>
+          <span class="rc-author" style="left:202px;top:64px;height:19px">베리츄</span>
+          <span class="rc-star" style="left:163px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:177px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:191px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:206px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:219px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-views" style="left:243px;top:102px;height:18px">(1,503)조회수 576,1만</span>
+        </article>
+        <article class="recipe-card-f" style="top:657px;height:130px">
+          <img class="rc-img" style="left:14px;top:3px;width:124px;height:124px;border-radius:2px" src="../fridge/public/figma/Capture_2026_1105_100726.png" alt=""/>
+          <h3 class="rc-title" style="left:153px;top:5px;width:226px;height:42px">닭볶음탕 진짜진짜 황금레시피 알려 드려요 ~~ ^^</h3>
+          <span class="rc-avatar" style="left:156px;top:61px;width:25px;height:25px"></span>
+          <span class="rc-author" style="left:192px;top:64px;height:19px">주부9단요리톡톡</span>
+          <span class="rc-star" style="left:153px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:167px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:181px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:196px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-star" style="left:209px;top:102px;width:13px;height:13px"></span>
+          <span class="rc-views" style="left:233px;top:100px;height:18px">(2,773)조회수 625.1만</span>
+        </article>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <div class="nav-icons">
+      <button type="button" class="nav-btn" aria-label="홈">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.5 11 12 4l8.5 7v8.5a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5Z"></path>
+          <path d="M9.5 21v-6h5v6"></path>
+        </svg>
+      </button>
+      <button type="button" class="nav-btn" aria-label="냉장고">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect>
+          <path d="M6 9h12M15 5.5v1.5M15 11.5v3"></path>
+        </svg>
+      </button>
+      <button type="button" class="nav-btn is-active" aria-label="레시피" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4.5" y="2.5" width="15" height="19" rx="1.5"></rect>
+          <path d="M4.5 18h15M9 6v4.5M8 6v2.5a1 1 0 0 0 2 0V6M14.5 6c1.3 0 1.8 1.2 1.8 2.6s-.7 2-1.8 2V14"></path>
+        </svg>
+      </button>
+      <button type="button" class="nav-btn" aria-label="마이페이지">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<script>
+    // 뒤로가기
+    document.querySelector('.rp-back').addEventListener('click', () => history.back());
+
+    // 하단 탭: 홈 / 냉장고 → 냉장고 화면(index.html)
+    document.querySelectorAll('.nav-btn').forEach((btn) => {
+        const name = btn.getAttribute('aria-label');
+        if (name === '홈' || name === '냉장고') {
+            btn.addEventListener('click', () => { location.href = 'index.html'; });
+        }
+    });
+
+    // 화면이 420 보다 좁으면 전체를 같은 비율로 줄이기
+    const wrap = document.querySelector('.recipe-page-wrap');
+    const sizer = wrap.firstElementChild;
+    const page = document.querySelector('.recipe-page');
+    const fit = () => {
+        const s = Math.min(1, wrap.clientWidth / 420);
+        page.style.transform = 'scale(' + s + ')';
+        sizer.style.height = (852 * s) + 'px';
+    };
+    new ResizeObserver(fit).observe(wrap);
+    fit();
+</script>
+
+</body>
+</html>

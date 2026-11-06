@@ -7,9 +7,16 @@ import {
 } from "../utils/fridgeData";
 import "../styles/fridge.css";
 
-// 문이 다 열린 뒤에만 클릭으로 이동하도록 기다리는 시간 (ms)
+// 위 문이 이 각도(도) 이상 열려 있을 때만 클릭으로 이동
 // (휴대폰: 첫 번째 터치 = 문 열기, 두 번째 터치 = 이동)
-const OPEN_DELAY = 350;
+const OPEN_ANGLE = 70;
+
+// 문의 지금 회전 각도 구하기 (CSS transform 값에서 계산)
+const doorAngle = (el) => {
+  if (!el) return 0;
+  const m = new DOMMatrix(getComputedStyle(el).transform);
+  return Math.abs((Math.atan2(m.m13, m.m11) * 180) / Math.PI);
+};
 
 // 식재료 그림이 있는 폴더 (public/icons)
 const ICON_PATH = `${import.meta.env.BASE_URL}icons/`;
@@ -49,8 +56,8 @@ const Shelf = ({ shelf }) => (
 );
 
 // 문 (바깥면 + 두께 + 안쪽 선반). 오른쪽 경첩으로 열림
-const Door = ({ className, bins, children }) => (
-  <div className={`door ${className}`}>
+const Door = ({ className, bins, children, doorRef }) => (
+  <div className={`door ${className}`} ref={doorRef}>
     <div className="face door-outer">
       <div className="handle" />
       {children}
@@ -71,17 +78,11 @@ const Door = ({ className, bins, children }) => (
 
 // onOpenFridge: 위 문이 열린 상태에서 안을 클릭하면 실행 (없으면 클릭해도 아무 일 없음)
 const Box = ({ onOpenFridge }) => {
-  const openedAt = useRef(0); // 위 문이 열리기 시작한 시각
+  const upperDoor = useRef(null);
 
-  const startOpen = () => {
-    if (!openedAt.current) openedAt.current = Date.now();
-  };
-  const stopOpen = () => {
-    openedAt.current = 0;
-  };
+  // 위 문이 충분히 열린 상태일 때만 이동
   const clickInside = () => {
-    if (!onOpenFridge) return;
-    if (openedAt.current && Date.now() - openedAt.current >= OPEN_DELAY) {
+    if (onOpenFridge && doorAngle(upperDoor.current) >= OPEN_ANGLE) {
       onOpenFridge();
     }
   };
@@ -94,10 +95,6 @@ const Box = ({ onOpenFridge }) => {
         className="zone zone-door"
         tabIndex={0}
         aria-label="냉장실 문 열기"
-        onMouseEnter={startOpen}
-        onMouseLeave={stopOpen}
-        onFocus={startOpen}
-        onBlur={stopOpen}
         onClick={clickInside}
         onKeyDown={(e) => {
           if (e.key === "Enter" && onOpenFridge) onOpenFridge();
@@ -134,7 +131,7 @@ const Box = ({ onOpenFridge }) => {
           <div className="face face-divider" />
 
           {/* ---- 문 2개 ---- */}
-          <Door className="door-upper" bins={fridgeDoor}>
+          <Door className="door-upper" bins={fridgeDoor} doorRef={upperDoor}>
             {/* 귀여운 얼굴 */}
             <div className="fridge-face">
               <span className="eye eye--left" />

@@ -633,6 +633,29 @@
 
     // 이벤트 리스너 연결
     input.addEventListener('keypress', (e) => { if (e.key === 'Enter') addIngredients(); });
+
+    // ---- 냉장고 위 문이 열린 다음 안을 클릭하면 레시피창(recipes.html)으로 이동 ----
+    // (휴대폰: 첫 번째 터치 = 문 열기, 두 번째 터치 = 이동)
+    const OPEN_ANGLE = 70; // 이 각도 이상 열려 있을 때만 이동
+    const upperDoor = document.querySelector('.door-upper');
+    const doorZone = document.querySelector('.zone-door');
+
+    // 문의 지금 회전 각도 (CSS transform 값에서 계산)
+    const doorAngle = () => {
+        const m = new DOMMatrix(getComputedStyle(upperDoor).transform);
+        return Math.abs(Math.atan2(m.m13, m.m11) * 180 / Math.PI);
+    };
+
+    doorZone.addEventListener('click', () => {
+        if (doorAngle() >= OPEN_ANGLE) location.href = 'recipes.html';
+    });
+    doorZone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') location.href = 'recipes.html';
+    });
+
+    // 하단 탭: 레시피 → 레시피창
+    document.querySelector('.nav-btn[aria-label="레시피"]')
+        .addEventListener('click', () => { location.href = 'recipes.html'; });
 </script>
 
 </body>
